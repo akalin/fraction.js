@@ -1,12 +1,12 @@
 'use strict';
 
-describe('fraction', function() {
-  var bigIntegerEquality = function(first, second) {
-    if (first instanceof BigInteger && second instanceof BigInteger) {
-      return first.equals(second);
-    }
-  };
+var bigIntegerEquality = function(first, second) {
+  if (first instanceof BigInteger && second instanceof BigInteger) {
+    return first.equals(second);
+  }
+};
 
+describe('fraction', function() {
   beforeEach(function() {
     jasmine.addCustomEqualityTester(bigIntegerEquality);
   });

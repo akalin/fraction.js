@@ -109,4 +109,14 @@ describe('fraction', function() {
     expect(fMinusOne1.negate()).toEqual(fOne1);
     expect(fMinusOne2.negate()).toEqual(fOne2);
   });
+
+  it('reciprocate', function() {
+    var fZero = newBigFraction(0, 1);
+    expect(function() {
+      fZero.reciprocate();
+    }).toThrow(new Error('zero denominator'))
+
+    var f = newBigFraction(1, -2);
+    expect(f.reciprocate()).toEqual(newBigFraction(-2, 1));
+  });
 });

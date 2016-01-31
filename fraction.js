@@ -31,3 +31,7 @@ Fraction.prototype.equals = function(val) {
 Fraction.prototype.negate = function() {
   return new Fraction(this._n.negate(), this._d);
 };
+
+Fraction.prototype.reciprocate = function() {
+  return new Fraction(this._d, this._n);
+};

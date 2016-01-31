@@ -75,3 +75,17 @@ Fraction.prototype.signum = function() {
   var ds = this._d.signum();
   return ((ns > 0) == (ds > 0)) ? +1 : -1;
 };
+
+Fraction.prototype.compareTo = function(val) {
+  var a = this._n, b = this._d, c = val._n, d = val._d;
+  var s = ((b.signum() > 0) == (d.signum() > 0)) ? +1 : -1;
+  s *= a.multiply(d).compareTo(b.multiply(c));
+  // Force return value to -1, 0, or +1.
+  if (s < 0) {
+    return -1;
+  } else if (s > 0) {
+    return +1;
+  } else {
+    return 0;
+  }
+};

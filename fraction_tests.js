@@ -41,47 +41,47 @@ describe('fraction', function() {
     }).toThrow(new Error('zero denominator'))
   });
 
+  var cZero = [
+    newBigFraction(0, 1),
+    newBigFraction(0, 2),
+    newBigFraction(0, -1),
+    newBigFraction(0, -2)
+  ];
+
+  var cOneHalf = [
+    newBigFraction(1, 2),
+    newBigFraction(-1, -2)
+  ];
+
+  var cMinusOneHalf = [
+    newBigFraction(-1, 2),
+    newBigFraction(1, -2)
+  ];
+
+  var cOne = [
+    newBigFraction(1, 1),
+    newBigFraction(-1, -1)
+  ];
+
+  var cMinusOne = [
+    newBigFraction(1, -1),
+    newBigFraction(-1, 1)
+  ];
+
+  var cTwo = [
+    newBigFraction(2, 1),
+    newBigFraction(-2, -1)
+  ];
+
+  var cMinusTwo = [
+    newBigFraction(2, -1),
+    newBigFraction(-2, 1)
+  ];
+
+  var cs = [cMinusTwo, cMinusOne, cMinusOneHalf,
+            cZero, cOneHalf, cOne, cTwo];
+
   it('equals', function() {
-    var cZero = [
-      newBigFraction(0, 1),
-      newBigFraction(0, 2),
-      newBigFraction(0, -1),
-      newBigFraction(0, -2)
-    ];
-
-    var cOneHalf = [
-      newBigFraction(1, 2),
-      newBigFraction(-1, -2)
-    ];
-
-    var cMinusOneHalf = [
-      newBigFraction(-1, 2),
-      newBigFraction(1, -2)
-    ];
-
-    var cOne = [
-      newBigFraction(1, 1),
-      newBigFraction(-1, -1)
-    ];
-
-    var cMinusOne = [
-      newBigFraction(1, -1),
-      newBigFraction(-1, 1)
-    ];
-
-    var cTwo = [
-      newBigFraction(2, 1),
-      newBigFraction(-2, -1)
-    ];
-
-    var cMinusTwo = [
-      newBigFraction(2, -1),
-      newBigFraction(-2, 1)
-    ];
-
-    var cs = [cMinusTwo, cMinusOne, cMinusOneHalf,
-              cZero, cOneHalf, cOne, cTwo];
-
     for (var i = 0; i < cs.length; ++i) {
       for (var j = 0; j < cs.length; ++j) {
         var expectedEquals = (i == j);
@@ -185,5 +185,25 @@ describe('fraction', function() {
     expect(f5.signum()).toEqual(-1);
     var f6 = newBigFraction(-1, 1);
     expect(f6.signum()).toEqual(-1);
+  });
+
+  it('compareTo', function() {
+    for (var i = 0; i < cs.length; ++i) {
+      for (var j = 0; j < cs.length; ++j) {
+        var expectedCompareTo;
+        if (i < j) {
+          expectedCompareTo = -1;
+        } else if (i > j) {
+          expectedCompareTo = +1;
+        } else {
+          expectedCompareTo = 0;
+        }
+        for (var k = 0; k < cs[i].length; ++k) {
+          for (var l = 0; l < cs[j].length; ++l) {
+            expect(cs[i][k].compareTo(cs[j][l])).toEqual(expectedCompareTo);
+          }
+        }
+      }
+    }
   });
 });

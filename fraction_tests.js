@@ -93,4 +93,20 @@ describe('fraction', function() {
       }
     }
   });
+
+  it('negate', function() {
+    var fZero1 = newBigFraction(0, 1);
+    var fZero2 = newBigFraction(0, -1);
+    expect(fZero1.negate()).toEqual(fZero1);
+    expect(fZero2.negate()).toEqual(fZero2);
+
+    var fOne1 = newBigFraction(1, 1);
+    var fOne2 = newBigFraction(-1, -1);
+    var fMinusOne1 = newBigFraction(-1, 1);
+    var fMinusOne2 = newBigFraction(1, -1);
+    expect(fOne1.negate()).toEqual(fMinusOne1);
+    expect(fOne2.negate()).toEqual(fMinusOne2);
+    expect(fMinusOne1.negate()).toEqual(fOne1);
+    expect(fMinusOne2.negate()).toEqual(fOne2);
+  });
 });

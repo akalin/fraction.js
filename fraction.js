@@ -27,3 +27,7 @@ Fraction.prototype.equals = function(val) {
   var a = this._n, b = this._d, c = val._n, d = val._d;
   return a.multiply(d).equals(b.multiply(c));
 };
+
+Fraction.prototype.negate = function() {
+  return new Fraction(this._n.negate(), this._d);
+};

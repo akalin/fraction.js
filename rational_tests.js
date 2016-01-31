@@ -1,11 +1,38 @@
 'use strict';
 
-// TODO: Check that rationals are in canonical form.
-
 describe('rational', function() {
-  // From fraction_tests.js.
+  var customMatchers = {
+    toHaveParts: function(util, customEqualityTesters) {
+      return {
+        compare: function(actual, expectedN, expectedD) {
+          var en = new BigInteger(expectedN.toString());
+          var ed = new BigInteger(expectedD.toString());
+
+          var result = {};
+          result.pass =
+            util.equals(actual.numerator(), en, customEqualityTesters) &&
+            util.equals(actual.denominator(), ed, customEqualityTesters);
+
+          if (result.pass) {
+            result.message =
+              'Expected ' + actual + ' to not have numerator ' +
+              expectedN + ' and denominator ' + expectedD;
+          } else {
+            result.message =
+              'Expected ' + actual + ' to have numerator ' +
+              expectedN + ' and denominator ' + expectedD;
+          }
+
+          return result;
+        }
+      };
+    }
+  };
+
   beforeEach(function() {
+    // From fraction_tests.js.
     jasmine.addCustomEqualityTester(bigIntegerEquality);
+    jasmine.addMatchers(customMatchers);
   });
 
   it('construction and accessors', function() {
@@ -103,17 +130,18 @@ describe('rational', function() {
   it('negate', function() {
     var rZero1 = newBigRational(0, 1);
     var rZero2 = newBigRational(0, -1);
-    expect(rZero1.negate()).toEqual(rZero1);
-    expect(rZero2.negate()).toEqual(rZero2);
+    expect(rZero1.negate()).toHaveParts(0, 1);
+    expect(rZero2.negate()).toHaveParts(0, 1);
 
     var rOne1 = newBigRational(1, 1);
     var rOne2 = newBigRational(-1, -1);
+    expect(rOne1.negate()).toHaveParts(-1, 1);
+    expect(rOne2.negate()).toHaveParts(-1, 1);
+
     var rMinusOne1 = newBigRational(-1, 1);
     var rMinusOne2 = newBigRational(1, -1);
-    expect(rOne1.negate()).toEqual(rMinusOne1);
-    expect(rOne2.negate()).toEqual(rMinusOne2);
-    expect(rMinusOne1.negate()).toEqual(rOne1);
-    expect(rMinusOne2.negate()).toEqual(rOne2);
+    expect(rMinusOne1.negate()).toHaveParts(1, 1);
+    expect(rMinusOne2.negate()).toHaveParts(1, 1);
   });
 
   it('reciprocate', function() {
@@ -123,7 +151,7 @@ describe('rational', function() {
     }).toThrow(new Error('zero denominator'))
 
     var r = newBigRational(1, -2);
-    expect(r.reciprocate()).toEqual(newBigRational(-2, 1));
+    expect(r.reciprocate()).toHaveParts(-2, 1);
   });
 
   it('add', function() {
@@ -131,7 +159,7 @@ describe('rational', function() {
     var r2 = newBigRational(-3, 4);
 
     var r = r1.add(r2);
-    expect(r).toEqual(newBigRational(-5, 4));
+    expect(r).toHaveParts(-5, 4);
   });
 
   it('subtract', function() {
@@ -139,7 +167,7 @@ describe('rational', function() {
     var r2 = newBigRational(-3, 4);
 
     var r = r1.subtract(r2);
-    expect(r).toEqual(newBigRational(1, 4));
+    expect(r).toHaveParts(1, 4);
   });
 
   it('multiply', function() {
@@ -147,7 +175,7 @@ describe('rational', function() {
     var r2 = newBigRational(-3, 4);
 
     var r = r1.multiply(r2);
-    expect(r).toEqual(newBigRational(3, 8));
+    expect(r).toHaveParts(3, 8);
   });
 
   it('divide', function() {
@@ -159,17 +187,17 @@ describe('rational', function() {
     }).toThrow(new Error('zero denominator'))
 
     var r = r1.divide(r2);
-    expect(r).toEqual(newBigRational(2, 3));
+    expect(r).toHaveParts(2, 3);
   });
 
   it('pow', function() {
     var r = newBigRational(1, -2);
-    expect(r.pow(0)).toEqual(newBigRational(1, 1));
-    expect(r.pow(9)).toEqual(newBigRational(-1, 512));
-    expect(r.pow(-9)).toEqual(newBigRational(-512, 1));
+    expect(r.pow(0)).toHaveParts(1, 1);
+    expect(r.pow(9)).toHaveParts(-1, 512);
+    expect(r.pow(-9)).toHaveParts(-512, 1);
 
     var rZero = newBigRational(0, 5);
-    expect(rZero.pow(0)).toEqual(newBigRational(1, 1));
+    expect(rZero.pow(0)).toHaveParts(1, 1);
 
     expect(function() {
       newBigRational(0, 1).pow(-1);
@@ -216,18 +244,18 @@ describe('rational', function() {
   it('abs', function() {
     var rZero1 = newBigRational(0, 1);
     var rZero2 = newBigRational(0, -1);
-    expect(rZero1.abs()).toEqual(rZero1);
-    expect(rZero2.abs()).toEqual(rZero1);
+    expect(rZero1.abs()).toHaveParts(0, 1);
+    expect(rZero2.abs()).toHaveParts(0, 1);
 
     var rOne1 = newBigRational(1, 1);
     var rOne2 = newBigRational(-1, -1);
-    expect(rOne1.abs()).toEqual(rOne1);
-    expect(rOne2.abs()).toEqual(rOne1);
+    expect(rOne1.abs()).toHaveParts(1, 1);
+    expect(rOne2.abs()).toHaveParts(1, 1);
 
     var rMinusOne1 = newBigRational(-1, 1);
     var rMinusOne2 = newBigRational(1, -1);
-    expect(rMinusOne1.abs()).toEqual(rOne1);
-    expect(rMinusOne2.abs()).toEqual(rOne1);
+    expect(rMinusOne1.abs()).toHaveParts(1, 1);
+    expect(rMinusOne2.abs()).toHaveParts(1, 1);
   });
 
   it('min and max', function() {

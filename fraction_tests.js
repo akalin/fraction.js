@@ -223,4 +223,11 @@ describe('fraction', function() {
     expect(fMinusOne1.abs()).toEqual(fOne1);
     expect(fMinusOne2.abs()).toEqual(fOne1);
   });
+
+  it('min and max', function() {
+    var f1 = newBigFraction(1, -2);
+    var f2 = newBigFraction(-3, 4);
+    expect(f1.min(f2)).toBe(f2);
+    expect(f1.max(f2)).toBe(f1);
+  });
 });

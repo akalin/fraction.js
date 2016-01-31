@@ -93,3 +93,11 @@ Fraction.prototype.compareTo = function(val) {
 Fraction.prototype.abs = function() {
   return new Fraction(this._n.abs(), this._d.abs());
 };
+
+Fraction.prototype.min = function(val) {
+  return (this.compareTo(val) <= 0) ? this : val;
+};
+
+Fraction.prototype.max = function(val) {
+  return (this.compareTo(val) >= 0) ? this : val;
+};

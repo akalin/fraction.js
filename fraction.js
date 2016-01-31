@@ -1,6 +1,7 @@
 'use strict';
 
-// Assume only that T, the type of n and d, is an integral domain.
+// Assume only that T, the type of n and d, is an integral domain,
+// which is optionally ordered.
 function Fraction(n, d) {
   if (d.equals(d.constructor.ZERO)) {
     throw new Error('zero denominator');
@@ -61,4 +62,16 @@ Fraction.prototype.pow = function(exponent) {
   // This maps (0/n)^0 to ((0^0)/1), so we remain agnostic to the
   // behavior of 0^0 in T.
   return new Fraction(this._n.pow(exponent), this._d.pow(exponent));
+};
+
+// The functions below can only be used if T is ordered.
+
+Fraction.prototype.signum = function() {
+  // Force return value to -1, 0, or +1.
+  var ns = this._n.signum();
+  if (ns == 0) {
+    return 0;
+  }
+  var ds = this._d.signum();
+  return ((ns > 0) == (ds > 0)) ? +1 : -1;
 };

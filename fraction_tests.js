@@ -169,4 +169,21 @@ describe('fraction', function() {
       newBigFraction(0, 1).pow(-1);
     }).toThrow(new Error('zero denominator'))
   });
+
+  it('signum', function() {
+    var f1 = newBigFraction(0, 1);
+    expect(f1.signum()).toEqual(0);
+    var f2 = newBigFraction(0, -1);
+    expect(f2.signum()).toEqual(0);
+
+    var f3 = newBigFraction(1, 1);
+    expect(f3.signum()).toEqual(1);
+    var f4 = newBigFraction(-1, -1);
+    expect(f4.signum()).toEqual(1);
+
+    var f5 = newBigFraction(1, -1);
+    expect(f5.signum()).toEqual(-1);
+    var f6 = newBigFraction(-1, 1);
+    expect(f6.signum()).toEqual(-1);
+  });
 });

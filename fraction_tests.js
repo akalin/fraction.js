@@ -135,4 +135,12 @@ describe('fraction', function() {
     var f = f1.subtract(f2);
     expect(f).toEqual(newBigFraction(-2, -8));
   });
+
+  it('multiply', function() {
+    var f1 = newBigFraction(1, -2);
+    var f2 = newBigFraction(-3, 4);
+
+    var f = f1.multiply(f2);
+    expect(f).toEqual(newBigFraction(-3, -8));
+  });
 });

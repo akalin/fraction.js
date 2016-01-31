@@ -3,16 +3,22 @@
 // Assume only that T, the type of n and d, is a GCD domain, which is
 // optionally ordered.
 function Rational(n, d) {
+  return this._set(n, d, true);
+}
+
+Rational.prototype._set = function(n, d, divideByGCD) {
   if (d.equals(d.constructor.ZERO)) {
     throw new Error('zero denominator');
   }
 
-  // Assume that gcd(n, 0) == gcd(0, n) == n for any n. Also assume,
-  // if T are ordered, that n.gcd(d) has the correct value only up to
-  // sign.
-  var gcd = n.gcd(d);
-  n = n.divide(gcd);
-  d = d.divide(gcd);
+  if (divideByGCD) {
+    // Assume that gcd(n, 0) == gcd(0, n) == n for any n. Also assume,
+    // if T are ordered, that n.gcd(d) has the correct value only up
+    // to sign.
+    var gcd = n.gcd(d);
+    n = n.divide(gcd);
+    d = d.divide(gcd);
+  }
 
   // Don't assume that T is ordered.
   if (n.signum && d.signum && d.signum() < 0) {
@@ -20,9 +26,25 @@ function Rational(n, d) {
     d = d.negate();
   }
 
+  this._setCanonical(n, d);
+};
+
+Rational.prototype._setCanonical = function(n, d) {
   this._n = n;
   this._d = d;
-}
+};
+
+Rational._new = function(n, d, divideByGCD) {
+  var r = Object.create(Rational.prototype);
+  r._set(n, d, divideByGCD);
+  return r;
+};
+
+Rational._newCanonical = function(n, d) {
+  var r = Object.create(Rational.prototype);
+  r._setCanonical(n, d);
+  return r;
+};
 
 Rational.prototype.numerator = function() {
   return this._n;
@@ -41,13 +63,11 @@ Rational.prototype.equals = function(val) {
 };
 
 Rational.prototype.negate = function() {
-  // TODO: Avoid unneeded GCD calculation here.
-  return new Rational(this._n.negate(), this._d);
+  return Rational._newCanonical(this._n.negate(), this._d);
 };
 
 Rational.prototype.reciprocate = function() {
-  // TODO: Avoid unneeded GCD calculation here.
-  return new Rational(this._d, this._n);
+  return Rational._new(this._d, this._n, false);
 };
 
 Rational.prototype.add = function(val) {
@@ -71,13 +91,12 @@ Rational.prototype.divide = function(val) {
 };
 
 Rational.prototype.pow = function(exponent) {
-  // TODO: Avoid unneeded GCD calculation here.
   if (exponent < 0) {
-    return new Rational(this._d.pow(-exponent), this._n.pow(-exponent));
+    return Rational._new(this._d.pow(-exponent), this._n.pow(-exponent), false);
   }
   // This maps (0/1)^0 to ((0^0)/1), so we remain agnostic to the
   // behavior of 0^0 in T.
-  return new Rational(this._n.pow(exponent), this._d.pow(exponent));
+  return Rational._newCanonical(this._n.pow(exponent), this._d.pow(exponent));
 };
 
 // The functions below can only be used if T is ordered.
@@ -108,8 +127,7 @@ Rational.prototype.compareTo = function(val) {
 };
 
 Rational.prototype.abs = function() {
-  // TODO: Avoid unneeded GCD calculation here.
-  return new Rational(this._n.abs(), this._d);
+  return Rational._newCanonical(this._n.abs(), this._d);
 };
 
 Rational.prototype.min = function(val) {

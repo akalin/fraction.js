@@ -81,13 +81,15 @@ Rational.prototype.subtract = function(val) {
 };
 
 Rational.prototype.multiply = function(val) {
-  // TODO: Optimize GCD calculation here.
-  return new Rational(this._n.multiply(val._n), this._d.multiply(val._d));
+  var a = this._n, b = this._d, c = val._n, d = val._d;
+  var gcdAD = a.gcd(d), gcdBC = b.gcd(c);
+  var n = a.divide(gcdAD).multiply(c.divide(gcdBC));
+  var d = b.divide(gcdBC).multiply(d.divide(gcdAD));
+  return Rational._newCanonical(n, d);
 };
 
 Rational.prototype.divide = function(val) {
-  // TODO: Optimize GCD calculation here.
-  return new Rational(this._n.multiply(val._d), this._d.multiply(val._n));
+  return this.multiply(val.reciprocate());
 };
 
 Rational.prototype.pow = function(exponent) {

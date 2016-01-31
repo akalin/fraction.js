@@ -35,3 +35,8 @@ Fraction.prototype.negate = function() {
 Fraction.prototype.reciprocate = function() {
   return new Fraction(this._d, this._n);
 };
+
+Fraction.prototype.add = function(val) {
+  var a = this._n, b = this._d, c = val._n, d = val._d;
+  return new Fraction(a.multiply(d).add(b.multiply(c)), b.multiply(d));
+};

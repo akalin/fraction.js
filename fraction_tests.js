@@ -127,4 +127,12 @@ describe('fraction', function() {
     var f = f1.add(f2);
     expect(f).toEqual(newBigFraction(10, -8));
   });
+
+  it('subtract', function() {
+    var f1 = newBigFraction(1, -2);
+    var f2 = newBigFraction(-3, 4);
+
+    var f = f1.subtract(f2);
+    expect(f).toEqual(newBigFraction(-2, -8));
+  });
 });

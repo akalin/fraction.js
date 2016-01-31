@@ -49,3 +49,7 @@ Fraction.prototype.subtract = function(val) {
 Fraction.prototype.multiply = function(val) {
   return new Fraction(this._n.multiply(val._n), this._d.multiply(val._d));
 };
+
+Fraction.prototype.divide = function(val) {
+  return new Fraction(this._n.multiply(val._d), this._d.multiply(val._n));
+};

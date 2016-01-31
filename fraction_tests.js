@@ -143,4 +143,16 @@ describe('fraction', function() {
     var f = f1.multiply(f2);
     expect(f).toEqual(newBigFraction(-3, -8));
   });
+
+  it('divide', function() {
+    var f1 = newBigFraction(1, -2);
+    var f2 = newBigFraction(-3, 4);
+
+    expect(function() {
+      f1.divide(newBigFraction(0, 1));
+    }).toThrow(new Error('zero denominator'))
+
+    var f = f1.divide(f2);
+    expect(f).toEqual(newBigFraction(4, 6));
+  });
 });

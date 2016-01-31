@@ -206,4 +206,21 @@ describe('fraction', function() {
       }
     }
   });
+
+  it('abs', function() {
+    var fZero1 = newBigFraction(0, 1);
+    var fZero2 = newBigFraction(0, -1);
+    expect(fZero1.abs()).toEqual(fZero1);
+    expect(fZero2.abs()).toEqual(fZero1);
+
+    var fOne1 = newBigFraction(1, 1);
+    var fOne2 = newBigFraction(-1, -1);
+    expect(fOne1.abs()).toEqual(fOne1);
+    expect(fOne2.abs()).toEqual(fOne1);
+
+    var fMinusOne1 = newBigFraction(-1, 1);
+    var fMinusOne2 = newBigFraction(1, -1);
+    expect(fMinusOne1.abs()).toEqual(fOne1);
+    expect(fMinusOne2.abs()).toEqual(fOne1);
+  });
 });

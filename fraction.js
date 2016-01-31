@@ -89,3 +89,7 @@ Fraction.prototype.compareTo = function(val) {
     return 0;
   }
 };
+
+Fraction.prototype.abs = function() {
+  return new Fraction(this._n.abs(), this._d.abs());
+};

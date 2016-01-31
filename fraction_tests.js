@@ -155,4 +155,18 @@ describe('fraction', function() {
     var f = f1.divide(f2);
     expect(f).toEqual(newBigFraction(4, 6));
   });
+
+  it('pow', function() {
+    var f = newBigFraction(2, -2);
+    expect(f.pow(0)).toEqual(newBigFraction(1, 1));
+    expect(f.pow(9)).toEqual(newBigFraction(512, -512));
+    expect(f.pow(-9)).toEqual(newBigFraction(-512, 512));
+
+    var fZero = newBigFraction(0, 5);
+    expect(fZero.pow(0)).toEqual(newBigFraction(1, 1));
+
+    expect(function() {
+      newBigFraction(0, 1).pow(-1);
+    }).toThrow(new Error('zero denominator'))
+  });
 });

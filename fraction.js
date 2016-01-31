@@ -53,3 +53,12 @@ Fraction.prototype.multiply = function(val) {
 Fraction.prototype.divide = function(val) {
   return new Fraction(this._n.multiply(val._d), this._d.multiply(val._n));
 };
+
+Fraction.prototype.pow = function(exponent) {
+  if (exponent < 0) {
+    return new Fraction(this._d.pow(-exponent), this._n.pow(-exponent));
+  }
+  // This maps (0/n)^0 to ((0^0)/1), so we remain agnostic to the
+  // behavior of 0^0 in T.
+  return new Fraction(this._n.pow(exponent), this._d.pow(exponent));
+};

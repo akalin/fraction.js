@@ -22,3 +22,8 @@ Fraction.prototype.denominator = function() {
 Fraction.prototype.toString = function(arg) {
   return '(' + this._n.toString(arg) + ')/(' + this._d.toString(arg) + ')';
 };
+
+Fraction.prototype.equals = function(val) {
+  var a = this._n, b = this._d, c = val._n, d = val._d;
+  return a.multiply(d).equals(b.multiply(c));
+};

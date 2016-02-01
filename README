@@ -1,0 +1,10 @@
+There are many fraction/rational Javascript libraries, but this one's
+mine. :-)
+
+There are two classes: Fraction and Rational. Fraction doesn't assume
+the type of the numerator and denominator is anything more than an
+integral domain. In other words, it doesn't try to reduce the fraction
+to lowest terms.
+
+Rational does assume the type is a GCD domain, and so it uses that to
+reduce the fraction to lowest terms.
